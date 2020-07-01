@@ -19,7 +19,7 @@ source:
     git_rev: master
     patches:
       - 001_blah_to_blih.patch
-      - sel(win): 002_blib_to_blob.patch
+    win_patches: 002_blib_to_blob.patch
 
 build:
   number: 0
