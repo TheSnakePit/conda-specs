@@ -1,3 +1,76 @@
+# Proposal for new recipe - Marcelo
+
+```YAML
+context:
+  name: blah
+  version: "1.2"
+  build_num: 3
+  major_ver: "{{ version.split('.')[0] }}" 
+
+# indicates that we are using version 2 of the recipe format
+recipe_format: 2
+
+package:
+  name: {{ name|lower }}
+  version: "{{ version }}"  # we have to have quotes here or conda build errors
+
+source:
+  - git_url: https://github.com/blib/blah
+    git_rev: master
+    patches:
+      - 001_blah_to_blih.patch
+      - sel(win): 002_blib_to_blob.patch
+
+build:
+  number: 0
+  script: "{{ python }} -m pip install . --no-deps --ignore-installed -vv"
+  
+requirements:
+  host:
+    - pip
+    - python >=3.5
+    # this is a selector
+    # it can be as many keys as needed
+    # when parsing, only one key is allowed to eval to true, if more than one does 
+    # an error is raised - the value in the dict with the true key is inserted for the 
+    # element
+    # this construct can appear anywhere in the recipe
+  win_host:
+    - rust =1
+  linux_host:
+    - rust >=1
+  unix_host:
+    - zlib
+  run:
+    - python
+    - "{{ pin_subpackage('libxgboost', exact=True) }}"
+  win_run:
+    - numpy
+  unix_host:
+    - zlib
+  linux_host:
+    - pytest
+   
+test:
+  requirements:
+    - nose
+  imports:
+    - blah
+
+about:
+  home: "https://palletsprojects.com/p/click/"
+  license: "BSD"
+  license_family: "BSD"
+  license_file: "LICENSE.txt"
+  summary: "Composable command line interface toolkit"
+
+extra:
+  recipe-maintainers:
+    - FrankSinatra
+    - ElvisPresley
+```
+
+
 # Proposal for v2 Recipe spec
 
 By example:
