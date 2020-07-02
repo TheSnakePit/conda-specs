@@ -29,12 +29,6 @@ requirements:
   host:
     - pip
     - python >=3.5
-    # this is a selector
-    # it can be as many keys as needed
-    # when parsing, only one key is allowed to eval to true, if more than one does 
-    # an error is raised - the value in the dict with the true key is inserted for the 
-    # element
-    # this construct can appear anywhere in the recipe
   win_host:
     - rust =1
   linux_host:
